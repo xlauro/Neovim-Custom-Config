@@ -15,6 +15,7 @@ return {
         opts = {
             close_if_last_window = true,
             filesystem = {
+                use_libuv_file_watcher = true,
                 filtered_items = {
                     visible = false,
                     hide_dotfiles = false,

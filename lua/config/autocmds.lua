@@ -10,3 +10,14 @@ autocmd("TextYankPost", {
         vim.highlight.on_yank({ higroup = "Visual", timeout = 200 })
     end,
 })
+
+-- Sincronização automática de alterações externas nos buffers
+autocmd({ "FocusGained", "BufEnter", "CursorHold", "CursorHoldI" }, {
+    desc = "Recarrega buffers modificados externamente no sistema de arquivos",
+    group = augroup("auto_read", { clear = true }),
+    callback = function()
+        if vim.fn.mode() ~= "c" then
+            vim.cmd("checktime")
+        end
+    end,
+})

@@ -21,6 +21,7 @@ return {
             { "<leader>du", desc = "Alternar painel da UI" },
             { "<leader>dt", desc = "Encerrar Debug e Fechar Painéis" },
             { "<leader>pd", desc = "Python: Iniciar Debug (DAP)" },
+            { "<leader>Gd", desc = "Go: Iniciar Debug (DAP)" },
         },
         dependencies = {
             "rcarriga/nvim-dap-ui",
@@ -130,6 +131,32 @@ return {
                         },
                     })
                 end
+            end
+
+            -- 4. Adapter Delve (Go)
+            local dlv_path = vim.fn.exepath("dlv")
+            if dlv_path == "" then
+                dlv_path = vim.fn.stdpath("data") .. "/mason/bin/dlv"
+            end
+            dap.adapters.delve = function(callback, config)
+                if config.request == "attach" and config.mode == "remote" then
+                    local host = config.host or "127.0.0.1"
+                    local port = config.port or "38697"
+                    callback({
+                        type = "server",
+                        host = host,
+                        port = port,
+                    })
+                    return
+                end
+                callback({
+                    type = "server",
+                    port = "${port}",
+                    executable = {
+                        command = dlv_path ~= "" and dlv_path or "dlv",
+                        args = { "dap", "-l", "127.0.0.1:${port}" },
+                    },
+                })
             end
 
             -- Abre a UI automaticamente quando o processo de depuração é iniciado
@@ -439,6 +466,43 @@ return {
                         local port = tonumber(port_str) or 5678
                         return { host = host, port = port }
                     end,
+                },
+            }
+
+            -- Configurações para Go
+            dap.configurations.go = {
+                {
+                    type = "delve",
+                    name = "Go: Depurar pacote atual (main)",
+                    request = "launch",
+                    program = "${fileDirname}",
+                },
+                {
+                    type = "delve",
+                    name = "Go: Depurar arquivo atual",
+                    request = "launch",
+                    program = "${file}",
+                },
+                {
+                    type = "delve",
+                    name = "Go: Depurar teste do pacote",
+                    request = "launch",
+                    mode = "test",
+                    program = "${fileDirname}",
+                },
+                {
+                    type = "delve",
+                    name = "Go: Depurar teste do arquivo",
+                    request = "launch",
+                    mode = "test",
+                    program = "${file}",
+                },
+                {
+                    type = "delve",
+                    name = "Go: Anexar a processo (Attach)",
+                    request = "attach",
+                    mode = "local",
+                    processId = require("dap.utils").pick_process,
                 },
             }
 

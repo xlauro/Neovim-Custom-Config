@@ -326,12 +326,41 @@ return {
                 },
             })
 
+            vim.lsp.config("gopls", {
+                settings = {
+                    gopls = {
+                        analyses = {
+                            unusedparams = true,
+                            shadow = true,
+                            nilness = true,
+                            unusedwrite = true,
+                            useany = true,
+                        },
+                        staticcheck = true,
+                        gofumpt = true,
+                        completeUnimported = true,
+                        usePlaceholders = true,
+                        hints = {
+                            assignVariableTypes = true,
+                            compositeLiteralFields = true,
+                            compositeLiteralTypes = true,
+                            constantValues = true,
+                            functionTypeParameters = true,
+                            parameterNames = true,
+                            rangeVariableTypes = true,
+                        },
+                        semanticTokens = true,
+                    },
+                },
+            })
+
             require("mason-lspconfig").setup({
                 ensure_installed = {
                     "lua_ls",        -- Lua
                     "clangd",        -- C e C++
                     "rust_analyzer", -- Rust
                     "zls",           -- Zig
+                    "gopls",         -- Go (Google Language Server)
                     "basedpyright",  -- Python: Language Server & Tipagem
                     "ruff",          -- Python: Linter ultrarrápido
                     "vtsls",         -- TypeScript e JavaScript (VS Code engine)

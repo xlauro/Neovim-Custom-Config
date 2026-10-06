@@ -47,6 +47,7 @@ opt.splitbelow = true
 opt.backspace = { "indent", "eol", "start" }
 opt.mouse = "a"
 opt.hidden = true
+opt.autoread = true
 
 -- Performance / experiência
 opt.updatetime = 300

@@ -12,6 +12,7 @@ return {
                 { "<leader>d", group = "Debug (DAP)", icon = "" },
                 { "<leader>f", group = "Busca / Terminal", icon = "" },
                 { "<leader>g", group = "Git", icon = "" },
+                { "<leader>G", group = "Golang", icon = "󰟓" },
                 { "<leader>p", group = "Python", icon = "" },
                 { "<leader>t", group = "Testes (Neotest)", icon = "󰙨" },
                 { "<leader>z", group = "Zig", icon = "" },
