@@ -21,7 +21,7 @@ return {
 
             require("lualine").setup({
                 options = {
-                    theme = "catppuccin",
+                    theme = "fluoromachine",
                     globalstatus = true, -- Mantém uma única barra no rodapé mesmo com splits
                     component_separators = { left = "│", right = "│" },
                     section_separators = { left = "", right = "" },

@@ -12,6 +12,7 @@ return {
             { "<leader>fg",       "<cmd>Telescope live_grep<cr>",   desc = "Buscar texto no projeto (Grep)" },
             { "<leader>fw",       "<cmd>Telescope grep_string<cr>", desc = "Buscar palavra sob o cursor" },
             { "<leader>fb",       "<cmd>Telescope buffers<cr>",     desc = "Listar buffers abertos" },
+            { "<leader>fd",       "<cmd>Telescope diagnostics<cr>", desc = "Buscar erros/diagnósticos (LSP)" },
             { "<leader>fh",       "<cmd>Telescope help_tags<cr>",   desc = "Buscar documentação/help" },
         },
         opts = {

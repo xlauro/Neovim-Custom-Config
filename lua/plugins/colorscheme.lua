@@ -1,20 +1,17 @@
 -- ~/.config/nvim/lua/plugins/colorscheme.lua
 return {
     {
-        "catppuccin/nvim",
-        name = "catppuccin",
+        "maxmx03/fluoromachine.nvim",
+        lazy = false,
         priority = 1000, -- Carrega antes dos outros plugins
         config = function()
-            require("catppuccin").setup({
-                flavour = "mocha", -- latte, frappe, macchiato, mocha
-                transparent_background = false,
-                integrations = {
-                    treesitter = true,
-                    native_lsp = { enabled = true },
-                    neotree = true,
-                },
+            local fm = require("fluoromachine")
+            fm.setup({
+                glow = true,
+                theme = "fluoromachine", -- Synthwave '84 aesthetic com efeito neon glow
+                transparent = false,
             })
-            vim.cmd.colorscheme("catppuccin")
+            vim.cmd.colorscheme("fluoromachine")
         end,
     },
 }

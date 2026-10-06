@@ -4,6 +4,7 @@ vim.g.maplocalleader = "\\"
 
 require("config.options")
 require("config.keymaps")
+require("config.autocmds")
 
 -- Filetype detection + plugins + indentação específica da linguagem
 vim.cmd("filetype plugin indent on")

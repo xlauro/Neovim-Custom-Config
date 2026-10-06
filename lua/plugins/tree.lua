@@ -24,6 +24,52 @@ return {
                     enabled = true,
                 },
             },
+            event_handlers = {
+                {
+                    event = "file_renamed",
+                    handler = function(args)
+                        local changes = {
+                            files = {
+                                {
+                                    oldUri = vim.uri_from_fname(args.source),
+                                    newUri = vim.uri_from_fname(args.destination),
+                                },
+                            },
+                        }
+                        local clients = vim.lsp.get_clients()
+                        for _, client in ipairs(clients) do
+                            if client:supports_method("workspace/willRenameFiles") then
+                                local resp = client.request_sync("workspace/willRenameFiles", changes, 2000, 0)
+                                if resp and resp.result ~= nil then
+                                    vim.lsp.util.apply_workspace_edit(resp.result, client.offset_encoding)
+                                end
+                            end
+                        end
+                    end,
+                },
+                {
+                    event = "file_moved",
+                    handler = function(args)
+                        local changes = {
+                            files = {
+                                {
+                                    oldUri = vim.uri_from_fname(args.source),
+                                    newUri = vim.uri_from_fname(args.destination),
+                                },
+                            },
+                        }
+                        local clients = vim.lsp.get_clients()
+                        for _, client in ipairs(clients) do
+                            if client:supports_method("workspace/willRenameFiles") then
+                                local resp = client.request_sync("workspace/willRenameFiles", changes, 2000, 0)
+                                if resp and resp.result ~= nil then
+                                    vim.lsp.util.apply_workspace_edit(resp.result, client.offset_encoding)
+                                end
+                            end
+                        end
+                    end,
+                },
+            },
         },
         init = function()
             vim.api.nvim_create_autocmd("VimEnter", {
