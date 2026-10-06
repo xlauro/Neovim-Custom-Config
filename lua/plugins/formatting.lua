@@ -9,9 +9,6 @@ return {
             formatters_by_ft = {
                 lua = { "stylua" },
                 rust = { "rustfmt" },
-                zig = { "zigfmt" },
-                zon = { "zigfmt" },
-                python = { "ruff_organize_imports", "ruff_format" },
                 go = { "goimports", "gofumpt" },
                 javascript = { "prettierd", "prettier", "biome", stop_after_first = true },
                 javascriptreact = { "prettierd", "prettier", "biome", stop_after_first = true },

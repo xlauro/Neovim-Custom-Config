@@ -49,11 +49,6 @@ return {
                     map("gi", vim.lsp.buf.implementation, "Ir para implementação")
                     map("K", vim.lsp.buf.hover, "Ver documentação (Hover)")
 
-                    if client and client.name == "ruff" then
-                        -- Desativa hover do Ruff para priorizar a documentação e tipos do Basedpyright
-                        client.server_capabilities.hoverProvider = false
-                    end
-
                     if client and client:supports_method("textDocument/signatureHelp", ev.buf) then
                         vim.keymap.set("i", "<C-k>", vim.lsp.buf.signature_help, {
                             buffer = ev.buf,
@@ -267,61 +262,12 @@ return {
                 },
             })
 
-            vim.lsp.config("zls", {
-                filetypes = { "zig", "zon", "zir" },
-                settings = {
-                    zls = {
-                        enable_build_on_save = true,
-                        enable_snippets = true,
-                        enable_argument_placeholders = true,
-                        completion_label_details = true,
-                        semantic_tokens = "partial",
-                        inlay_hints_show_variable_type_hints = true,
-                        inlay_hints_show_struct_literal_field_type = true,
-                        inlay_hints_show_parameter_name = true,
-                        inlay_hints_show_builtin = false,
-                        inlay_hints_exclude_single_argument = true,
-                        inlay_hints_hide_redundant_param_names = true,
-                        inlay_hints_hide_redundant_param_names_last_token = true,
-                    },
-                },
-            })
-
             vim.lsp.config("lua_ls", {
                 settings = {
                     Lua = {
                         diagnostics = { globals = { "vim" } },
                         workspace = { checkThirdParty = false },
                         telemetry = { enable = false },
-                    },
-                },
-            })
-
-            vim.lsp.config("basedpyright", {
-                settings = {
-                    basedpyright = {
-                        analysis = {
-                            autoSearchPaths = true,
-                            useLibraryCodeForTypes = true,
-                            diagnosticMode = "openFilesOnly",
-                            typeCheckingMode = "standard",
-                            inlayHints = {
-                                variableTypes = true,
-                                functionReturnTypes = true,
-                                genericTypes = true,
-                                callArgumentNames = true,
-                            },
-                        },
-                    },
-                },
-            })
-
-            vim.lsp.config("ruff", {
-                init_options = {
-                    settings = {
-                        lint = {
-                            select = { "E", "F", "W", "I", "UP", "B", "SIM" },
-                        },
                     },
                 },
             })
@@ -359,10 +305,7 @@ return {
                     "lua_ls",        -- Lua
                     "clangd",        -- C e C++
                     "rust_analyzer", -- Rust
-                    "zls",           -- Zig
                     "gopls",         -- Go (Google Language Server)
-                    "basedpyright",  -- Python: Language Server & Tipagem
-                    "ruff",          -- Python: Linter ultrarrápido
                     "vtsls",         -- TypeScript e JavaScript (VS Code engine)
                     "eslint",        -- Linter / formatador ESLint
                     "jsonls",        -- JSON Language Server com suporte a Schemas

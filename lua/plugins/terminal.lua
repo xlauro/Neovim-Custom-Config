@@ -79,20 +79,9 @@ return {
                 local out = vim.fn.expand("%:r")
 
                 local commands = {
-                    python = {
-                        run = vim.fn.executable("uv") == 1 and string.format("uv run python %s", file) or
-                            string.format("python3 %s", file),
-                        build = vim.fn.executable("uv") == 1 and "uv sync" or "pip install -e .",
-                    },
                     rust = {
                         build = "cargo build",
                         run = "cargo run",
-                    },
-                    zig = {
-                        build = vim.fn.filereadable("build.zig") == 1 and "zig build" or
-                        string.format("zig build-exe -O Debug %s", file),
-                        run = vim.fn.filereadable("build.zig") == 1 and "zig build run" or
-                        string.format("zig run %s", file),
                     },
                     c = {
                         build = vim.fn.filereadable("Makefile") == 1 and "make" or
