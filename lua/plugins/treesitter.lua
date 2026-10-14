@@ -17,6 +17,7 @@ local languages = {
     "json",
     "html",
     "css",
+    "python",
 }
 
 local filetypes = {
@@ -38,6 +39,7 @@ local filetypes = {
     "jsonc",
     "html",
     "css",
+    "python",
 }
 
 return {

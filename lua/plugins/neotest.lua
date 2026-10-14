@@ -13,6 +13,8 @@ return {
             { "<leader>tS", desc = "Interromper execução dos testes" },
             { "<leader>Gt", desc = "Go: Rodar teste mais próximo" },
             { "<leader>Gf", desc = "Go: Rodar testes do arquivo" },
+            { "<leader>Pt", desc = "Python: Rodar teste mais próximo" },
+            { "<leader>Pf", desc = "Python: Rodar testes do arquivo" },
         },
         dependencies = {
             "nvim-neotest/nvim-nio",
@@ -20,6 +22,7 @@ return {
             "antoinemadec/FixCursorHold.nvim",
             "nvim-treesitter/nvim-treesitter",
             "nvim-neotest/neotest-go",
+            "nvim-neotest/neotest-python",
             "mfussenegger/nvim-dap",
         },
         config = function()
@@ -30,6 +33,10 @@ return {
                     require("neotest-go")({
                         experimental = { test_table = true },
                         args = { "-count=1", "-v" },
+                    }),
+                    require("neotest-python")({
+                        dap = { justMyCode = false },
+                        runner = "pytest",
                     }),
                 },
                 status = {

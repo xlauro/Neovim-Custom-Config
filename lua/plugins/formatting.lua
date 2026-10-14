@@ -10,6 +10,7 @@ return {
                 lua = { "stylua" },
                 rust = { "rustfmt" },
                 go = { "goimports", "gofumpt" },
+                python = { "ruff_organize_imports", "ruff_format" },
                 javascript = { "prettierd", "prettier", "biome", stop_after_first = true },
                 javascriptreact = { "prettierd", "prettier", "biome", stop_after_first = true },
                 typescript = { "prettierd", "prettier", "biome", stop_after_first = true },

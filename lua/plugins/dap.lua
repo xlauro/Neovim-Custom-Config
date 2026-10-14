@@ -21,6 +21,7 @@ return {
             { "<leader>du", desc = "Alternar painel da UI" },
             { "<leader>dt", desc = "Encerrar Debug e Fechar Painéis" },
             { "<leader>Gd", desc = "Go: Iniciar Debug (DAP)" },
+            { "<leader>Pd", desc = "Python: Iniciar Debug (DAP)" },
         },
         dependencies = {
             "rcarriga/nvim-dap-ui",
@@ -114,6 +115,32 @@ return {
                         args = { "dap", "-l", "127.0.0.1:${port}" },
                     },
                 })
+            end
+
+            -- 4. Adapter debugpy (Python)
+            local mason_debugpy_py = vim.fn.stdpath("data") .. "/mason/packages/debugpy/venv/bin/python"
+            dap.adapters.python = function(callback, config)
+                if config.request == "attach" then
+                    local port = (config.connect or config).port
+                    local host = (config.connect or config).host or "127.0.0.1"
+                    callback({
+                        type = "server",
+                        port = assert(port, "`connect.port` é obrigatório para anexar debugpy"),
+                        host = host,
+                        options = {
+                            source_filetype = "python",
+                        },
+                    })
+                else
+                    callback({
+                        type = "executable",
+                        command = vim.fn.filereadable(mason_debugpy_py) == 1 and mason_debugpy_py or "python3",
+                        args = { "-m", "debugpy.adapter" },
+                        options = {
+                            source_filetype = "python",
+                        },
+                    })
+                end
             end
 
             -- Abre a UI automaticamente quando o processo de depuração é iniciado
@@ -258,6 +285,52 @@ return {
                     request = "attach",
                     mode = "local",
                     processId = require("dap.utils").pick_process,
+                },
+            }
+
+            local function get_python_path()
+                local venv = vim.env.VIRTUAL_ENV
+                if venv and vim.fn.filereadable(venv .. "/bin/python") == 1 then
+                    return venv .. "/bin/python"
+                end
+                local local_venv = vim.fn.getcwd() .. "/.venv/bin/python"
+                if vim.fn.filereadable(local_venv) == 1 then
+                    return local_venv
+                end
+                return "python3"
+            end
+
+            dap.configurations.python = {
+                {
+                    type = "python",
+                    request = "launch",
+                    name = "Python: Executar arquivo atual",
+                    program = "${file}",
+                    pythonPath = get_python_path,
+                    console = "integratedTerminal",
+                },
+                {
+                    type = "python",
+                    request = "launch",
+                    name = "Python: Executar com argumentos",
+                    program = "${file}",
+                    args = function()
+                        local args_string = vim.fn.input("Argumentos: ")
+                        return vim.split(args_string, " +")
+                    end,
+                    pythonPath = get_python_path,
+                    console = "integratedTerminal",
+                },
+                {
+                    type = "python",
+                    request = "attach",
+                    name = "Python: Anexar a processo remoto (Porta 5678)",
+                    connect = function()
+                        local host = vim.fn.input("Host [127.0.0.1]: ")
+                        host = host ~= "" and host or "127.0.0.1"
+                        local port = tonumber(vim.fn.input("Porta [5678]: ")) or 5678
+                        return { host = host, port = port }
+                    end,
                 },
             }
 

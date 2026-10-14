@@ -13,6 +13,7 @@ return {
                 { "<leader>f", group = "Busca / Terminal", icon = "" },
                 { "<leader>g", group = "Git", icon = "" },
                 { "<leader>G", group = "Golang", icon = "󰟓" },
+                { "<leader>P", group = "Python", icon = "" },
                 { "<leader>t", group = "Testes (Neotest)", icon = "󰙨" },
                 { "<leader>e", desc = "Alternar Neo-tree", icon = "󰙅" },
                 { "<leader>o", desc = "Focar na Neo-tree", icon = "󰙅" },

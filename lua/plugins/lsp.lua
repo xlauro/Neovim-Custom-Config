@@ -300,6 +300,37 @@ return {
                 },
             })
 
+            vim.lsp.config("basedpyright", {
+                settings = {
+                    basedpyright = {
+                        analysis = {
+                            autoSearchPaths = true,
+                            useLibraryCodeForTypes = true,
+                            diagnosticMode = "openFilesOnly",
+                            typeCheckingMode = "standard",
+                            inlayHints = {
+                                variableTypes = true,
+                                functionReturnTypes = true,
+                                genericTypes = true,
+                                callArgumentNames = true,
+                            },
+                        },
+                    },
+                },
+            })
+
+            vim.lsp.config("ruff", {
+                init_options = {
+                    settings = {
+                        logLevel = "info",
+                    },
+                },
+                on_attach = function(client)
+                    -- Desativa o hover do ruff para priorizar a documentação rica do basedpyright
+                    client.server_capabilities.hoverProvider = false
+                end,
+            })
+
             require("mason-lspconfig").setup({
                 ensure_installed = {
                     "lua_ls",        -- Lua
@@ -309,6 +340,8 @@ return {
                     "vtsls",         -- TypeScript e JavaScript (VS Code engine)
                     "eslint",        -- Linter / formatador ESLint
                     "jsonls",        -- JSON Language Server com suporte a Schemas
+                    "basedpyright",  -- Python Language Server & Type Checker
+                    "ruff",          -- Linter e formatador de alto desempenho para Python
                 },
                 automatic_enable = true,
             })
